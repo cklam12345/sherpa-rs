@@ -31,10 +31,15 @@ fn read_audio_file(path: &str) -> Result<(i32, Vec<f32>)> {
 
     Ok((sample_rate, samples))
 }
+use std::env;
 
 fn main() -> Result<()> {
     // Read audio data from the file
-    let (sample_rate, mut samples) = read_audio_file("sam_altman.wav")?;
+    let args: Vec<String> = std::env::args().collect(); 
+    let filename = &args[1];
+
+    let (sample_rate, mut samples) = read_audio_file(filename)?;
+
 
     // Pad with 3 seconds of slience so vad will able to detect stop
     for _ in 0..3 * sample_rate {
